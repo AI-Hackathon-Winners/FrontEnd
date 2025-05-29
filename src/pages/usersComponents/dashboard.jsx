@@ -1,5 +1,7 @@
 import React from 'react'
 import { FiUsers, FiMail, FiRepeat, FiFileText, FiSettings, FiBarChart2 } from "react-icons/fi";
+import { Link } from 'react-router-dom';
+import CompanySocials from '../../components/companySocials';
 
 const Dashboard = () => {
   return (
@@ -7,27 +9,23 @@ const Dashboard = () => {
 
       {/* Sidebar */}
       <aside className="w-64 bg-gradient-to-br from-purple-700 to-indigo-800 text-white shadow-xl p-6 hidden md:block">
-        <h2 className="text-2xl font-bold text-yellow-400 mb-10">InsightCRM</h2>
+        <h2 className="text-2xl font-bold text-yellow-400 mb-10">Bondly</h2>
         <nav className="space-y-6 text-sm font-semibold">
-          <a href="#" className="flex items-center gap-3 hover:text-yellow-300 transition">
-            <FiUsers className="text-lg" /> Leads
-          </a>
-          <a href="#" className="flex items-center gap-3 hover:text-yellow-300 transition">
-            <FiMail className="text-lg" /> Emails
-          </a>
-          <a href="#" className="flex items-center gap-3 hover:text-yellow-300 transition">
-            <FiRepeat className="text-lg" /> Follow-Ups
-          </a>
-          <a href="#" className="flex items-center gap-3 hover:text-yellow-300 transition">
-            <FiFileText className="text-lg" /> Invoices
-          </a>
-          <a href="#" className="flex items-center gap-3 hover:text-yellow-300 transition">
-            <FiBarChart2 className="text-lg" /> Analytics
-          </a>
-          <a href="#" className="flex items-center gap-3 hover:text-yellow-300 transition">
-            <FiSettings className="text-lg" /> Settings
-          </a>
+          <Link to = '/leads' className="flex items-center gap-3 hover:text-yellow-300 transition"> <FiUsers className="text-lg" /> Leads
+           </Link>
+           
+          <Link to = '/email' className="flex items-center gap-3 hover:text-yellow-300 transition"><FiMail className="text-lg" /> Emails</Link>
+          
+          <Link to = '/followUp' className="flex items-center gap-3 hover:text-yellow-300 transition"> <FiRepeat className="text-lg" /> Follow-Ups</Link>
+          
+          <Link to = '/invoice' className="flex items-center gap-3 hover:text-yellow-300 transition"><FiFileText className="text-lg" /> Invoices</Link>
+         
+          <Link to = '/analytics' className="flex items-center gap-3 hover:text-yellow-300 transition"><FiBarChart2 className="text-lg" /> Analytics</Link>
+          
+          <Link to = '/settings' className="flex items-center gap-3 hover:text-yellow-300 transition"><FiSettings className="text-lg" /> Settings</Link>
+         
         </nav>
+        
       </aside>
 
       {/* Main Content */}
@@ -74,6 +72,9 @@ const Dashboard = () => {
           </div>
         </section>
       </main>
+
+      {/* Floating Social Icons */}
+      <CompanySocials />
     </div>
   )
 }

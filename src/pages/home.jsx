@@ -14,7 +14,7 @@ const Home = () => {
      <div className="min-h-screen flex flex-col bg-gradient-to-br from-purple-900 to-indigo-900 text-white">
       {/* Navbar */}
  <header className="flex justify-between items-center px-6 md:px-20 py-6">
-  <h1 className="text-3xl font-bold">InsightCRM AI</h1>
+  <h1 className="text-3xl font-bold font-mono">Bondly</h1>
     <nav className="space-x-6 text-sm md:text-base">
         <button className="hover:underline" onClick={() => navigate("/")}>Home</button>
 
@@ -56,20 +56,22 @@ const Home = () => {
 
       {/* Hero Section */}
       <section className="flex flex-col-reverse md:flex-row items-center justify-between px-6 md:px-20 py-20">
-        <div className="max-w-xl">
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
-            Smart CRM Powered by <span className="text-yellow-300">AI & NLP</span>
-          </h2>
-          <p className="mb-8 text-lg text-gray-200">
-            InsightCRM AI helps you track leads, understand conversations, detect emotions, generate follow-ups, and close deals — all in one intelligent platform.
-          </p>
-          <button
-            onClick={() => navigate("/register")}
-            className="bg-white text-purple-900 font-semibold px-6 py-3 rounded-full hover:bg-gray-100 transition"
-          >
-            Get Started Free
-          </button>
-        </div>
+       <div className="max-w-xl">
+  <h2 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight text-white">
+    Building strong customer bonds <br />
+    <span className="text-yellow-300">effortlessly</span>
+  </h2>
+  <p className="mb-8 text-lg text-gray-200 leading-relaxed">
+    <strong>Bondly</strong> is your smart, simple, and AI-powered CRM. 
+    Manage leads, automate follow-ups, and understand customer emotions — all without the chaos.
+  </p>
+  <button
+    onClick={() => navigate("/register")}
+    className="bg-white text-purple-900 font-semibold px-6 py-3 rounded-full hover:bg-gray-100 transition shadow-md"
+  >
+    Try Bondly Free
+  </button>
+</div>
 
         {/* Right Side Image or Graphic */}
         <div className="w-full md:w-1/2 mb-10 md:mb-0">
@@ -104,7 +106,7 @@ const Home = () => {
 
       {/* Footer */}
       <footer className="text-center py-6 text-sm text-gray-300 bg-gradient-to-br from-purple-600 to-indigo-600">
-        &copy; {new Date().getFullYear()} InsightCRM AI. All rights reserved.
+        &copy; {new Date().getFullYear()} BONDLY. All rights reserved.
       </footer>
     </div>
   )
