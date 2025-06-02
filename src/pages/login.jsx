@@ -29,37 +29,41 @@ const Login = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      try {
-        setLoading(true);
-        const res = await axios.post("https://backend-5wa5.onrender.com/api/v1/auth/login", {
-          email: form.email,
-          password: form.password,
-        });
+     try {
+  setLoading(true);
+  const res = await axios.post("https://backend-5wa5.onrender.com/users/login", {
+    email: form.email,
+    password: form.password,
+  });
 
-        const { token, user } = res.data;
+  const { accessToken, role } = res.data;
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("role", user.role);
+// Save to localStorage
+localStorage.setItem("token", accessToken);
+localStorage.setItem("role", role);
 
-        toast.success("Login successful!");
+// Optionally store the whole res.data if needed
+localStorage.setItem("user", JSON.stringify(res.data)); // or skip if not needed
 
-        // Redirect based on role
-        if (user.role === "admin") {
-          navigate("/admin/dashboard");
-        } else {
-          navigate("/dashboard");
-        }
+toast.success("Login successful!");
 
-      } catch (error) {
-        console.error("Login error:", error);
-        toast.error(
-          error.response?.data?.message || "Login failed. Please check credentials."
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
+// Redirect based on role
+if (role === "admin") {
+  navigate("/admin/dashboard");
+} else {
+  navigate("/dashboard");
+}
+
+} catch (error) {
+  console.error("Login error:", error);
+  if (error.response?.status === 401) {
+    toast.error("Invalid credentials. Please try again.");
+  } else {
+    toast.error("Something went wrong. Try again later.");
+  }
+  setLoading(false);
+}
+}
   };
 
   return (

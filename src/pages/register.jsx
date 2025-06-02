@@ -37,7 +37,7 @@ const Register = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         setLoading(true);
-        const res = await axios.post("https://backend-5wa5.onrender.com/api/v1/users/register", {
+        const res = await axios.post("https://backend-5wa5.onrender.com/users/register", {
           fullName: form.name,
           email: form.email,
           password: form.password,

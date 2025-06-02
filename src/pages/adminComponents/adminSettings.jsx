@@ -1,8 +1,9 @@
 import React from 'react'
 import  { useState } from 'react';
-import { FiSettings, FiMail, FiPhone, FiMapPin, FiToggleLeft, FiToggleRight } from 'react-icons/fi';
+import { FiSettings, FiMail, FiPhone, FiMapPin, FiToggleLeft, FiToggleRight, FiArrowLeft } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const AdminSettings = () => {
    const [company, setCompany] = useState({
@@ -18,6 +19,8 @@ const AdminSettings = () => {
     enableNotifications: true,
   });
 
+  const navigate = useNavigate();
+
   const handleCompanyChange = (e) =>
     setCompany({ ...company, [e.target.name]: e.target.value });
 
@@ -31,7 +34,13 @@ const AdminSettings = () => {
 
   return (
     <div className="p-6 md:p-10 bg-gradient-to-br from-indigo-50 to-purple-100 min-h-screen">
-      <h1 className="text-3xl font-bold text-purple-800 mb-10">⚙️ Admin Settings</h1>
+      <button
+        onClick={() => navigate('/adminDashboard')}
+        className="flex items-center gap-2 px-4 py-2 rounded-full border border-purple-600 text-purple-700 bg-white hover:bg-purple-50 transition"
+      >
+          <FiArrowLeft/> Back to Dashboard
+      </button>
+      <h1 className="text-3xl font-bold text-purple-800 mb-6 mt-12 "> Admin Settings</h1>
 
       {/* Company Info */}
       <motion.div

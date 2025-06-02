@@ -5,19 +5,23 @@ import Register from "./pages/register";
 import Login from "./pages/login";
 import Dashboard from "./pages/usersComponents/dashboard";
 import Leads from './pages/usersComponents/leads';
-import Email from './pages/usersComponents/email';
 import FollowUp from './pages/usersComponents/followUp';
 import Analytics from './pages/usersComponents/analytics';
 import LeadScoring from './pages/usersComponents/leadScoring';
 import Invoice from './pages/usersComponents/invoice';
 import Settings from './pages/settings';
 import Unauthorized from './pages/unauthorized';
-import PrivateRoute from './components/companySocials';
 import AdminDashboard from './pages/adminComponents/adminDashboard';
 import AdminUsers from './pages/adminComponents/adminUsers';
 import AdminAnalytics from './pages/adminComponents/adminAnalytics';
 import AdminSettings from './pages/adminComponents/adminSettings';
 import AdminLeads from './pages/adminComponents/adminLeads';
+import AdminCommunication from './pages/adminComponents/adminCommunication';
+import AdminAIConfig from './pages/adminComponents/adminAiConfig';
+import AdminCompanyInvoices from './pages/adminComponents/adminConpanyInvoices';
+import Conversations from './pages/usersComponents/conversations';
+import Deals from './pages/usersComponents/deals';
+
 
 const router = createBrowserRouter([
   { path: '/', element: <Home /> },
@@ -43,9 +47,9 @@ const router = createBrowserRouter([
     
   },
   {
-    path: '/email',
+    path: '/conversations',
     element:
-        <Email />
+        <Conversations/>
      
   },
   {
@@ -54,6 +58,13 @@ const router = createBrowserRouter([
         <FollowUp />
      
   },
+   {
+    path: '/deals',
+    element: <Deals/>
+        
+     
+  },
+   
   {
     path: '/analytics',
     element: 
@@ -109,6 +120,30 @@ const router = createBrowserRouter([
   element: 
     
       <AdminLeads/>
+   
+ 
+},
+{
+  path: '/adminCommunication',
+  element: 
+    
+      <AdminCommunication/>
+   
+ 
+},
+{
+  path: '/adminAiConfig',
+  element: 
+    
+      <AdminAIConfig/>
+   
+ 
+},
+{
+  path: '/adminCompanyInvoices',
+  element: 
+    
+      <AdminCompanyInvoices/>
    
  
 },

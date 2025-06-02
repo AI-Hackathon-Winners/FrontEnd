@@ -10,6 +10,7 @@ import {
   FiMail,
 } from "react-icons/fi";
 import { motion } from "framer-motion";
+import CompanySocials from '../../components/companySocials';
 
 const cards = [
   {
@@ -43,7 +44,7 @@ const AdminDashboard = () => {
     <div className="min-h-screen flex bg-gradient-to-br from-indigo-50 to-purple-100">
       {/* Sidebar */}
       <aside className="w-64 bg-gradient-to-br from-purple-700 to-indigo-800 text-white p-6 shadow-xl hidden md:block">
-        <h2 className="text-2xl font-bold text-yellow-400 mb-10">Bondly Admin</h2>
+        <h2 className="text-2xl font-bold text-yellow-400 mb-10">Bondly </h2>
         <nav className="space-y-6 text-sm font-semibold">
          
           <a href="/adminUsers" className="hover:text-yellow-300 flex items-center gap-3 transition">
@@ -52,13 +53,13 @@ const AdminDashboard = () => {
           <a href="/adminLeads" className="hover:text-yellow-300 flex items-center gap-3 transition">
             <FiGrid /> Lead Overview
           </a>
-          <a href="/adminMessages" className="hover:text-yellow-300 flex items-center gap-3 transition">
+          <a href="/adminCommunication" className="hover:text-yellow-300 flex items-center gap-3 transition">
             <FiMail /> Communication Monitoring
           </a>
-          <a href="/adminFollowUps" className="hover:text-yellow-300 flex items-center gap-3 transition">
+          <a href="/adminAiConfig" className="hover:text-yellow-300 flex items-center gap-3 transition">
             <FiRepeat /> AI Config & Follow-ups
           </a>
-          <a href="/adminInvoices" className="hover:text-yellow-300 flex items-center gap-3 transition">
+          <a href="/adminCompanyInvoices" className="hover:text-yellow-300 flex items-center gap-3 transition">
             <FiFileText /> Company Invoices
           </a>
           <a href="/adminAnalytics" className="hover:text-yellow-300 flex items-center gap-3 transition">
@@ -106,6 +107,8 @@ const AdminDashboard = () => {
           📊 System charts, user trends, summaries will appear here soon...
         </div>
       </main>
+      {/* Floating Social Icons */}
+      <CompanySocials/>
     </div>
   );
 };

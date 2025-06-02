@@ -1,37 +1,74 @@
-import React from 'react'
-import { FiUsers, FiMail, FiRepeat, FiFileText, FiSettings, FiBarChart2 } from "react-icons/fi";
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import {
+  FiUsers,
+  FiMessageSquare,
+  FiRepeat,
+  FiFileText,
+  FiSettings,
+  FiBarChart2,
+  FiBriefcase,
+  FiLogOut,
+} from "react-icons/fi";
+import { Link, useNavigate } from 'react-router-dom';
 import CompanySocials from '../../components/companySocials';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
+
   return (
-      <div className="flex min-h-screen bg-gradient-to-br from-purple-100 to-indigo-100 text-gray-800">
+    <div className="flex min-h-screen bg-gradient-to-br from-purple-100 to-indigo-100 text-gray-800">
 
       {/* Sidebar */}
       <aside className="w-64 bg-gradient-to-br from-purple-700 to-indigo-800 text-white shadow-xl p-6 hidden md:block">
         <h2 className="text-2xl font-bold text-yellow-400 mb-10">Bondly</h2>
         <nav className="space-y-6 text-sm font-semibold">
-          <Link to = '/leads' className="flex items-center gap-3 hover:text-yellow-300 transition"> <FiUsers className="text-lg" /> Leads
-           </Link>
-           
-          <Link to = '/email' className="flex items-center gap-3 hover:text-yellow-300 transition"><FiMail className="text-lg" /> Emails</Link>
-          
-          <Link to = '/followUp' className="flex items-center gap-3 hover:text-yellow-300 transition"> <FiRepeat className="text-lg" /> Follow-Ups</Link>
-          
-          <Link to = '/invoice' className="flex items-center gap-3 hover:text-yellow-300 transition"><FiFileText className="text-lg" /> Invoices</Link>
-         
-          <Link to = '/analytics' className="flex items-center gap-3 hover:text-yellow-300 transition"><FiBarChart2 className="text-lg" /> Analytics</Link>
-          
-          <Link to = '/settings' className="flex items-center gap-3 hover:text-yellow-300 transition"><FiSettings className="text-lg" /> Settings</Link>
-         
+          <Link to='/leads' className="flex items-center gap-3 hover:text-yellow-300 transition">
+            <FiUsers className="text-lg" /> Leads
+          </Link>
+
+          <Link to='/conversations' className="flex items-center gap-3 hover:text-yellow-300 transition">
+            <FiMessageSquare className="text-lg" /> Conversations
+          </Link>
+
+          <Link to='/followUp' className="flex items-center gap-3 hover:text-yellow-300 transition">
+            <FiRepeat className="text-lg" /> Follow-Ups
+          </Link>
+
+          <Link to='/deals' className="flex items-center gap-3 hover:text-yellow-300 transition">
+            <FiBriefcase className="text-lg" /> Deals
+          </Link>
+
+          <Link to='/invoice' className="flex items-center gap-3 hover:text-yellow-300 transition">
+            <FiFileText className="text-lg" /> Invoices
+          </Link>
+
+          <Link to='/analytics' className="flex items-center gap-3 hover:text-yellow-300 transition">
+            <FiBarChart2 className="text-lg" /> Analytics
+          </Link>
+
+          <Link to='/settings' className="flex items-center gap-3 hover:text-yellow-300 transition">
+            <FiSettings className="text-lg" /> Settings
+          </Link>
+
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 mt-6 hover:text-yellow-300 transition"
+          >
+            <FiLogOut className="text-lg" /> Logout
+          </button>
         </nav>
-        
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 p-6 md:p-10">
         {/* Top Navbar */}
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex justify-between items-center mb-10 relative">
           <h1 className="text-2xl font-bold text-purple-800">Dashboard</h1>
           <div className="flex items-center gap-4">
             <input
@@ -39,8 +76,27 @@ const Dashboard = () => {
               placeholder="Search..."
               className="rounded-full border border-purple-300 px-4 py-2 text-sm bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
-            <div className="w-8 h-8 bg-purple-700 text-white flex items-center justify-center rounded-full text-sm font-bold">
-              A
+
+            {/* Avatar Dropdown */}
+            <div className="relative">
+              <div
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-8 h-8 bg-purple-700 text-white flex items-center justify-center rounded-full text-sm font-bold cursor-pointer"
+              >
+                A
+              </div>
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10">
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-100 hover:text-red-600"
+                  >
+                    <div className="flex items-center gap-2">
+                      <FiLogOut /> Logout
+                    </div>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -52,7 +108,7 @@ const Dashboard = () => {
             <p className="text-2xl font-bold text-purple-800 mt-1">1,240</p>
           </div>
           <div className="bg-white p-6 rounded-xl shadow-md border-l-4 border-indigo-500 hover:shadow-xl transition duration-300">
-            <h2 className="text-sm text-gray-500">Emails Sent</h2>
+            <h2 className="text-sm text-gray-500">Total Conversations</h2>
             <p className="text-2xl font-bold text-indigo-800 mt-1">320</p>
           </div>
           <div className="bg-white p-6 rounded-xl shadow-md border-l-4 border-yellow-400 hover:shadow-xl transition duration-300">
@@ -79,4 +135,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default Dashboard;

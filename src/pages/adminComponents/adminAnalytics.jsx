@@ -1,10 +1,11 @@
 import React from 'react'
 import  { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   LineChart, Line, PieChart, Pie, BarChart, Bar,
   XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Cell,
 } from 'recharts';
-import { FiCalendar, FiPieChart, FiTrendingUp, FiBarChart2 } from 'react-icons/fi';
+import { FiCalendar, FiPieChart, FiTrendingUp, FiBarChart2, FiArrowLeft } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
 const COLORS = ['#6D28D9', '#FACC15', '#6366F1'];
@@ -13,6 +14,7 @@ const COLORS = ['#6D28D9', '#FACC15', '#6366F1'];
 const AdminAnalytics = () => {
     const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const navigate = useNavigate();
 
   // Mock data (replace with backend API later)
   const lineData = [
@@ -39,7 +41,14 @@ const AdminAnalytics = () => {
 
   return (
      <div className="p-6 md:p-10 bg-gradient-to-br from-purple-50 to-indigo-100 min-h-screen">
-      <h1 className="text-3xl font-bold text-purple-800 mb-8">📊 Admin Analytics Dashboard</h1>
+       <button
+         onClick={() => navigate('/adminDashboard')}
+         className="flex items-center gap-2 px-4 py-2 rounded-full border border-purple-600 text-purple-700 bg-white hover:bg-purple-50 transition"
+      >
+        <FiArrowLeft/> Back to Dashboard
+        </button>
+         <h1 className="text-3xl font-bold text-purple-800 mb-6 mt-12"> Admin Analytics Dashboard</h1>
+      
 
       {/* Filters */}
       <motion.div

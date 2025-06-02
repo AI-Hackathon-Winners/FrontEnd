@@ -1,10 +1,12 @@
 import React from 'react'
 import  { useState, useRef,  useEffect } from 'react';
-import { FiDownload, FiPlus, FiTrash, FiSettings } from 'react-icons/fi';
+import { FiDownload, FiPlus, FiTrash, FiSettings,  FiArrowLeft } from 'react-icons/fi';
 import { useReactToPrint } from 'react-to-print';
+import { useNavigate } from 'react-router-dom';
 
 const Invoice = () => {
    const [recipient, setRecipient] = useState('');
+   const navigate = useNavigate();
   const [items, setItems] = useState([{ name: '', quantity: 1, price: 0 }]);
   const [invoiceId, setInvoiceId] = useState('');
   const [invoiceDate, setInvoiceDate] = useState('');
@@ -65,7 +67,13 @@ const Invoice = () => {
   return (
     <div className="p-6 md:p-10 bg-gradient-to-br from-purple-50 to-indigo-100 min-h-screen">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-purple-800">🧾 Invoice Creator</h1>
+         <button
+                        onClick={() => navigate("/dashboard")}
+                        className="flex items-center gap-2 px-4 py-2 rounded-full border border-purple-600 text-purple-700 bg-white hover:bg-purple-50 transition"
+                      >
+                        <FiArrowLeft/> Back to Dashboard
+                      </button>
+       
         <button
           onClick={() => setShowSettings(!showSettings)}
           className="flex items-center gap-2 text-sm text-purple-600 border border-purple-600 px-4 py-2 rounded-full hover:bg-purple-100"
@@ -73,6 +81,7 @@ const Invoice = () => {
           <FiSettings /> Edit Sender Info
         </button>
       </div>
+       <h1 className="text-3xl font-bold text-purple-800 mb-6 mt-12">Invoice Creator</h1>
 
       {showSettings && (
         <div className="bg-white p-6 rounded-xl shadow-md mb-6">

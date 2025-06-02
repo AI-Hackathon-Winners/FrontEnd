@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { FiArrowLeft } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
+  const navigate = useNavigate();
   const [profile, setProfile] = useState({
     name: "Agnes Dansowaa",
     email: "agnes@example.com",
@@ -31,7 +34,13 @@ const Settings = () => {
 
   return (
     <div className="p-6 md:p-10 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-purple-800 mb-8">Settings</h1>
+       <button
+                      onClick={() => navigate("/dashboard")}
+                      className="flex items-center gap-2 px-4 py-2 rounded-full border border-purple-600 text-purple-700 bg-white hover:bg-purple-50 transition"
+                    >
+                      <FiArrowLeft/> Back to Dashboard
+                    </button>
+      <h1 className="text-3xl font-bold text-purple-800 mb-6 mt-12">Settings</h1>
 
       {/* Profile Section */}
       <div className="bg-white rounded-xl shadow-md p-6 mb-10">
