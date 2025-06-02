@@ -5,7 +5,7 @@ import registerLoginImage from "../assets/images/registerLoginImage.png";
 import registerLoginBg from "../assets/images/registerLoginBg.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { toast } from "react-toastify";
-import { LineWave } from "react-loader-spinner";
+import { BeatLoader } from "react-spinners";
 
 
 const Register = () => {
@@ -163,13 +163,16 @@ const Register = () => {
              className="w-full rounded-full bg-gradient-to-r from-purple-700 to-indigo-800 text-white font-semibold py-2 flex items-center justify-center"
            >
               {loading ? (
-                     <LineWave
-                       visible={true}
-                       height="30"
-                       width="100"
-                       color="#fff"
-                       ariaLabel="line-wave-loading"
-                    />
+                     <BeatLoader
+                        color="#fff"
+                        cssOverride={{}}
+                        loading
+                        margin={6}
+                        size={11}
+                        speedMultiplier={1}
+                        />
+                       
+                
                 ) : (
                       "Create Account"
                     )}
