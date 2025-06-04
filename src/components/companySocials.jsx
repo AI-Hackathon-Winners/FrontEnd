@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiInstagram, FiFacebook, FiLinkedin, FiMessageSquare, FiGlobe, FiVideo } from 'react-icons/fi';
+import { FiInstagram, FiFacebook, FiLinkedin, FiMessageSquare, FiGlobe, FiMail } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
 const socials = [
@@ -32,11 +32,11 @@ const socials = [
     tooltip: 'LinkedIn',
   },
   {
-    id: 'tiktok',
-    icon: <FiVideo />,
-    url: 'https://tiktok.com/@yourcompany',
-    color: 'bg-black',
-    tooltip: 'TikTok',
+    id: 'gmail',
+    icon: <FiMail />,
+    url: 'mailto:yourcompany@gmail.com',
+    color: 'bg-red-600',
+    tooltip: 'Gmail',
   },
   {
     id: 'website',

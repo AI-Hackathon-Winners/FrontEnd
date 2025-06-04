@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
-import { FiPlus, FiEye, FiArrowLeft } from 'react-icons/fi';
+import { FiPlus, FiEdit, FiTrash2, FiArrowLeft } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 const Deals = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [showDetailModal, setShowDetailModal] = useState(false);
-  const [selectedDeal, setSelectedDeal] = useState(null);
   const navigate = useNavigate();
 
+  /* ---------------------- STATE ---------------------- */
   const [deals, setDeals] = useState([
     {
       id: 1,
       name: 'Ayo Ventures',
-      type: 'Investor',
+      relationship: 'Investor',
       status: 'In Conversation',
       summary: 'Interested in follow-up, asked for updated pitch deck.',
       sentiment: 'Positive',
@@ -21,7 +19,7 @@ const Deals = () => {
     {
       id: 2,
       name: 'TechSpark Inc.',
-      type: 'Customer',
+      relationship: 'Customer',
       status: 'Committed',
       summary: 'Pilot signed off. Awaiting onboarding.',
       sentiment: 'Excited',
@@ -29,41 +27,80 @@ const Deals = () => {
     },
   ]);
 
-  const [newDeal, setNewDeal] = useState({
+  /* –– create / edit modal –– */
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formDeal, setFormDeal] = useState({
+    id: null,
     name: '',
-    type: '',
+    relationship: '',
     status: '',
     summary: '',
     sentiment: '',
     lastActivity: new Date().toISOString().split('T')[0],
   });
 
-  const handleInputChange = (e) => {
-    setNewDeal({ ...newDeal, [e.target.name]: e.target.value });
-  };
+  /* –– delete modal –– */
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [dealToDelete, setDealToDelete] = useState(null);
 
-  const handleAddDeal = (e) => {
-    e.preventDefault();
-    const newEntry = { ...newDeal, id: deals.length + 1 };
-    setDeals((prev) => [...prev, newEntry]);
-    setNewDeal({
+  /* ------------------ HANDLERS ------------------ */
+  const openNewDealModal = () => {
+    setIsEditing(false);
+    setFormDeal({
+      id: null,
       name: '',
-      type: '',
+      relationship: '',
       status: '',
       summary: '',
       sentiment: '',
       lastActivity: new Date().toISOString().split('T')[0],
     });
-    setShowModal(false);
+    setShowFormModal(true);
   };
 
-  const openDetailModal = (deal) => {
-    setSelectedDeal(deal);
-    setShowDetailModal(true);
+  const openEditModal = (deal) => {
+    setIsEditing(true);
+    setFormDeal(deal);
+    setShowFormModal(true);
   };
 
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormDeal((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (isEditing) {
+      // update existing
+      setDeals((prev) =>
+        prev.map((d) => (d.id === formDeal.id ? formDeal : d))
+      );
+    } else {
+      // add new
+      setDeals((prev) => [
+        ...prev,
+        { ...formDeal, id: Date.now() },
+      ]);
+    }
+    setShowFormModal(false);
+  };
+
+  const openDeleteModal = (deal) => {
+    setDealToDelete(deal);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    setDeals((prev) => prev.filter((d) => d.id !== dealToDelete.id));
+    setShowDeleteModal(false);
+  };
+
+  /* -------------- RENDER -------------- */
   return (
     <div className="p-6 md:p-10 bg-gray-100 min-h-screen">
+      {/* header */}
       <div className="flex justify-between items-center mb-8">
         <button
           onClick={() => navigate('/dashboard')}
@@ -72,22 +109,24 @@ const Deals = () => {
           <FiArrowLeft /> Back to Dashboard
         </button>
         <button
-          onClick={() => setShowModal(true)}
+          onClick={openNewDealModal}
           className="flex items-center gap-2 bg-yellow-400 text-purple-900 px-4 py-2 rounded-full font-semibold hover:bg-yellow-300 transition"
         >
           <FiPlus /> Add Deal
         </button>
       </div>
 
-      <h1 className="text-2xl font-bold text-purple-800 mt-6 mb-12">Deals Tracker</h1>
+      <h1 className="text-2xl font-bold text-purple-800 mt-6 mb-12">
+        Deals Tracker
+      </h1>
 
-      {/* Deals Table */}
+      {/* table */}
       <div className="overflow-auto bg-white rounded-xl shadow-md">
         <table className="w-full text-sm">
           <thead className="bg-purple-100 text-purple-800 text-left">
             <tr>
               <th className="p-4">Name</th>
-              <th className="p-4">Type</th>
+              <th className="p-4">Relationship</th>
               <th className="p-4">Status</th>
               <th className="p-4">Summary</th>
               <th className="p-4">Sentiment</th>
@@ -99,7 +138,7 @@ const Deals = () => {
             {deals.map((deal) => (
               <tr key={deal.id} className="border-t hover:bg-gray-50">
                 <td className="p-4 font-medium">{deal.name}</td>
-                <td className="p-4">{deal.type}</td>
+                <td className="p-4">{deal.relationship}</td>
                 <td className="p-4">
                   <span className="px-2 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs font-semibold">
                     {deal.status}
@@ -113,6 +152,8 @@ const Deals = () => {
                         ? 'bg-green-100 text-green-700'
                         : deal.sentiment === 'Excited'
                         ? 'bg-yellow-100 text-yellow-800'
+                        : deal.sentiment === 'Neutral'
+                        ? 'bg-gray-100 text-gray-700'
                         : 'bg-red-100 text-red-700'
                     }`}
                   >
@@ -122,11 +163,18 @@ const Deals = () => {
                 <td className="p-4">{deal.lastActivity}</td>
                 <td className="p-4 flex justify-end gap-2">
                   <button
-                    onClick={() => openDetailModal(deal)}
-                    className="text-purple-700 hover:underline"
-                    title="View Details"
+                    onClick={() => openEditModal(deal)}
+                    className="text-indigo-700 hover:underline"
+                    title="Edit Deal"
                   >
-                    <FiEye />
+                    <FiEdit />
+                  </button>
+                  <button
+                    onClick={() => openDeleteModal(deal)}
+                    className="text-red-500 hover:underline"
+                    title="Delete Deal"
+                  >
+                    <FiTrash2 />
                   </button>
                 </td>
               </tr>
@@ -135,37 +183,39 @@ const Deals = () => {
         </table>
       </div>
 
-      {/* Add Deal Modal */}
-      {showModal && (
-        <div className="fixed inset-0  bg-opacity-30 backdrop-blur-sm z-50 flex justify-center items-center p-6">
+      {/* ---------- ADD / EDIT MODAL ---------- */}
+      {showFormModal && (
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex justify-center items-center p-6">
           <div className="bg-white rounded-xl p-6 w-full max-w-lg shadow-xl">
-            <h2 className="text-xl font-bold text-purple-800 mb-4">Add New Deal</h2>
-            <form onSubmit={handleAddDeal} className="space-y-4">
+            <h2 className="text-xl font-bold text-purple-800 mb-4">
+              {isEditing ? 'Edit Deal' : 'Add New Deal'}
+            </h2>
+            <form onSubmit={handleFormSubmit} className="space-y-4">
               <input
                 name="name"
                 type="text"
-                placeholder="Deal Name (e.g., Kofi Ventures)"
-                value={newDeal.name}
-                onChange={handleInputChange}
+                placeholder="Deal Name"
+                value={formDeal.name}
+                onChange={handleFormChange}
                 required
                 className="w-full rounded-full border px-4 py-2 bg-gray-100"
               />
               <select
-                name="type"
-                value={newDeal.type}
-                onChange={handleInputChange}
+                name="relationship"
+                value={formDeal.relationship}
+                onChange={handleFormChange}
                 required
                 className="w-full rounded-full border px-4 py-2 bg-gray-100"
               >
-                <option value="" disabled>Select Type</option>
+                <option value="" disabled>Select Relationship</option>
                 <option value="Investor">Investor</option>
                 <option value="Customer">Customer</option>
                 <option value="Partner">Partner</option>
               </select>
               <select
                 name="status"
-                value={newDeal.status}
-                onChange={handleInputChange}
+                value={formDeal.status}
+                onChange={handleFormChange}
                 required
                 className="w-full rounded-full border px-4 py-2 bg-gray-100"
               >
@@ -179,15 +229,15 @@ const Deals = () => {
               <input
                 name="summary"
                 type="text"
-                placeholder="Short summary of interaction"
-                value={newDeal.summary}
-                onChange={handleInputChange}
+                placeholder="Short summary"
+                value={formDeal.summary}
+                onChange={handleFormChange}
                 className="w-full rounded-full border px-4 py-2 bg-gray-100"
               />
               <select
                 name="sentiment"
-                value={newDeal.sentiment}
-                onChange={handleInputChange}
+                value={formDeal.sentiment}
+                onChange={handleFormChange}
                 required
                 className="w-full rounded-full border px-4 py-2 bg-gray-100"
               >
@@ -197,10 +247,11 @@ const Deals = () => {
                 <option value="Neutral">Neutral</option>
                 <option value="Negative">Negative</option>
               </select>
+
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={() => setShowFormModal(false)}
                   className="px-4 py-2 rounded-full border text-gray-700"
                 >
                   Cancel
@@ -209,7 +260,7 @@ const Deals = () => {
                   type="submit"
                   className="px-6 py-2 bg-purple-700 text-white rounded-full hover:bg-purple-800 transition"
                 >
-                  Save Deal
+                  {isEditing ? 'Update Deal' : 'Save Deal'}
                 </button>
               </div>
             </form>
@@ -217,25 +268,28 @@ const Deals = () => {
         </div>
       )}
 
-      {/* View Details Modal */}
-      {showDetailModal && selectedDeal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-50 flex justify-center items-center p-6">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-xl">
-            <h2 className="text-xl font-bold text-purple-800 mb-4">Deal Details</h2>
-            <ul className="space-y-2 text-sm text-gray-700">
-              <li><strong>Name:</strong> {selectedDeal.name}</li>
-              <li><strong>Type:</strong> {selectedDeal.type}</li>
-              <li><strong>Status:</strong> {selectedDeal.status}</li>
-              <li><strong>Summary:</strong> {selectedDeal.summary}</li>
-              <li><strong>Sentiment:</strong> {selectedDeal.sentiment}</li>
-              <li><strong>Last Activity:</strong> {selectedDeal.lastActivity}</li>
-            </ul>
-            <div className="flex justify-end mt-6">
+      {/* ---------- DELETE CONFIRMATION MODAL ---------- */}
+      {showDeleteModal && dealToDelete && (
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex justify-center items-center p-6">
+          <div className="bg-white rounded-xl p-6 w-full max-w-sm shadow-xl">
+            <h2 className="text-lg font-semibold text-red-600 mb-4">
+              Delete Deal
+            </h2>
+            <p className="text-sm text-gray-700 mb-6">
+              Are you sure you want to delete <strong>{dealToDelete.name}</strong>? This action cannot be undone.
+            </p>
+            <div className="flex justify-end gap-2">
               <button
-                onClick={() => setShowDetailModal(false)}
-                className="px-6 py-2 bg-purple-700 text-white rounded-full hover:bg-purple-800 transition"
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 rounded-full border text-gray-700"
               >
-                Close
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-6 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition"
+              >
+                Delete
               </button>
             </div>
           </div>

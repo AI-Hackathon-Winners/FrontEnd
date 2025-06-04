@@ -10,9 +10,9 @@ const FollowUp = () => {
 const navigate = useNavigate();
   // Simulated contact (in reality you'd fetch this from context/state)
   const lead = {
-    name: 'John Doe',
-    email: 'john@example.com',
-    lastMessage: 'Hi, I’m still reviewing the proposal. Will get back soon.',
+    participant: 'Michael Owusu',
+    channel: 'Email',
+    summary: 'The sender expresses strong interest and requests more details to explore potential support.',
     relationship: 'Investor',
   };
 
@@ -23,35 +23,34 @@ const navigate = useNavigate();
         {
           day: 'Today',
           tone: 'Polite Reminder',
-          message: `Hi John, just following up on the proposal. Let me know if you'd like to jump on a quick call to clarify anything.`,
+          message: `Thank you again for the insightful conversation earlier. I’ve attached our pitch deck and a brief data-room overview, including team bios, financial model, and go-to-market milestones. Please let me know if any other detail would be helpful. I look forward to your thoughts!`,
         },
         {
           day: 'In 2 Days',
           tone: 'Gentle Nudge',
-          message: `Hey John, hope the week’s going well. Curious if you had a chance to review the proposal — happy to answer questions.`,
+          message: `Just following up to see if you had a chance to skim the deck. I’m happy to hop on a short call or send additional context on our traction, product roadmap, or unit economics.
+          Thanks for your time,.`,
         },
         {
           day: 'In 5 Days',
           tone: 'Final Ping',
-          message: `Hi John — just checking in one last time before I close the loop on this. Let me know if now isn't the right time.`,
+          message: `I know your schedule is packed, so I wanted to circle back one last time this week. If Bondly isn’t a fit right now, no worries—just let me know. Otherwise, I’d love to arrange a 20-minute deep dive whenever convenient.
+          Appreciate your consideration,.`,
         },
       ]);
       setLoading(false);
     }, 1500);
   };
 
-  const handleSendNow = (msg) => {
-    // Replace with real API/send logic
-    alert(`Sent to ${lead.email}: "${msg}"`);
-  };
+  
 
   return (
     <div className="p-6 md:p-10 bg-gradient-to-br from-purple-50 to-indigo-100 min-h-screen">
       <button
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate('/conversations')}
                 className="flex items-center gap-2 px-4 py-2 rounded-full border border-purple-600 text-purple-700 bg-white hover:bg-purple-50 transition"
               >
-                <FiArrowLeft/> Back to Dashboard
+                <FiArrowLeft/> Back to Conversations
               </button>
 
       <h1 className="text-3xl font-bold text-purple-800 mb-6 mt-12"> Smart Follow-Up Generator</h1>
@@ -64,15 +63,15 @@ const navigate = useNavigate();
         className="bg-white p-6 rounded-2xl shadow-md mb-8 border-l-4 border-purple-600"
       >
         <h2 className="text-xl font-semibold flex items-center gap-2 text-purple-800 mb-1">
-          <FiUser /> {lead.name}
+          <FiUser /> {lead.participant}
         </h2>
         <p className="text-sm text-gray-600 flex items-center gap-2">
-          <FiMail className="text-gray-500" /> {lead.email}
+          <FiMail className="text-gray-500" /> {lead.channel}
         </p>
         <p className="mt-3 text-sm text-gray-700 bg-gray-50 p-3 rounded-md border">
-          <strong>Last Message:</strong> “{lead.lastMessage}”
+          <strong>Summary:</strong> “{lead.summary}”
         </p>
-        <p className="mt-2 text-xs text-gray-500">Relationship: {lead.relationship}</p>
+        <p className="mt-2 text-xs text-gray-500">Type: {lead.relationship}</p>
       </motion.div>
 
       {/* Generate Button */}
@@ -93,7 +92,7 @@ const navigate = useNavigate();
           animate={{ opacity: 1 }} 
           className="bg-white p-6 rounded-2xl shadow-md"
         >
-          <h3 className="text-xl font-semibold text-purple-800 mb-6">📆 Suggested Follow-Up Timeline</h3>
+          <h3 className="text-xl font-semibold text-purple-800 mb-6"> Suggested Follow-Up Timeline</h3>
           <ol className="relative border-l border-purple-400">
             {followUps.map((item, idx) => (
               <li key={idx} className="mb-10 ml-4">
@@ -102,12 +101,7 @@ const navigate = useNavigate();
                 <p className="text-sm text-gray-700 bg-gray-50 border px-4 py-2 rounded-md">
                   {item.message}
                 </p>
-                <button
-                  onClick={() => handleSendNow(item.message)}
-                  className="mt-2 inline-flex items-center gap-2 text-sm bg-purple-600 text-white px-4 py-1.5 rounded-full hover:bg-purple-700 transition"
-                >
-                  <FiSend className="text-sm" /> Send Now
-                </button>
+                
               </li>
             ))}
           </ol>

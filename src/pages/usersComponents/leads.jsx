@@ -26,13 +26,43 @@ const Leads = () => {
     source: "",
   });
 
+  // Temporal (demo) leads
+  const demoLeads = [
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john@example.com",
+      phone: "0554758965",
+      status: "New",
+      note: "Interested in our services",
+      source: "WhatsApp",
+      created: "2025-06-01",
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      email: "jane@demo.com",
+      phone: "0539975648",
+      status: "Contacted",
+      note: "Follow up next week",
+      source: "Email",
+      created: "2025-06-02",
+    },
+  ];
+
   useEffect(() => {
     const fetchLeads = async () => {
       try {
         const res = await axios.get("http://localhost:4000/leads");
-        setLeads(res.data);
+        const data = res.data;
+        if (data.length === 0) {
+          setLeads(demoLeads); // use temporal leads if empty
+        } else {
+          setLeads(data);
+        }
       } catch (err) {
-        console.error("Failed to fetch leads", err);
+        console.error("Failed to fetch leads, using demo leads", err);
+        setLeads(demoLeads); // fallback to demo leads if API fails
       }
     };
     fetchLeads();
@@ -45,10 +75,7 @@ const Leads = () => {
         Object.values(lead).some((val) =>
           String(val).toLowerCase().includes(query.toLowerCase())
         );
-
-      const matchesStatus =
-        statusFilter === "" || lead.status === statusFilter;
-
+      const matchesStatus = statusFilter === "" || lead.status === statusFilter;
       return matchesQuery && matchesStatus;
     });
     setFilteredLeads(filtered);
@@ -119,9 +146,9 @@ const Leads = () => {
       </div>
 
       {/* Page Heading */}
-      <h1 className="text-2xl font-bold text-purple-800 mb-2">Lead Pipeline</h1>
+      <h1 className="text-2xl font-bold text-purple-800 mb-2">Leads</h1>
       <p className="text-sm text-gray-600 mb-6">
-        Track early interest across investors, users, or partners — and never let a warm lead go cold.
+        Track early interest across investors, users, or partners and never let a warm lead go cold.
       </p>
 
       {/* Search and Filter */}
@@ -144,9 +171,6 @@ const Leads = () => {
           <option value="">All Statuses</option>
           <option value="New">New</option>
           <option value="Contacted">Contacted</option>
-          <option value="Closed">Closed</option>
-          <option value="Won">Won</option>
-          <option value="Lost">Lost</option>
         </select>
       </div>
 
@@ -176,12 +200,7 @@ const Leads = () => {
                 <td className="p-4">{lead.source}</td>
                 <td className="p-4">{lead.created}</td>
                 <td className="p-4 flex justify-end gap-2">
-                  <button className="text-green-600 hover:underline" title="Convert to Conversation">
-                    Convert
-                  </button>
-                  <button className="text-purple-700 hover:underline" title="View">
-                    <FiEye />
-                  </button>
+                 
                   <button className="text-indigo-700 hover:underline" title="Edit">
                     <FiEdit />
                   </button>
@@ -198,18 +217,13 @@ const Leads = () => {
             {filteredLeads.length === 0 && (
               <tr>
                 <td colSpan="8" className="p-4 text-center text-gray-500">
-                  No leads match your search.
+                  No leads found.
                 </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
-
-      {/* AI Suggestion Placeholder */}
-      <section className="mt-12 bg-white p-6 rounded-xl shadow-sm border border-dashed border-purple-300 text-sm text-gray-500">
-        🧠 Bondly Tip: Soon, we'll show AI-detected urgency levels and suggest smart next steps based on tone and timing.
-      </section>
 
       {/* Modal */}
       {showModal && (
@@ -254,9 +268,6 @@ const Leads = () => {
                 <option value="" disabled>Status</option>
                 <option value="New">New</option>
                 <option value="Contacted">Contacted</option>
-                <option value="Closed">Closed</option>
-                <option value="Won">Won</option>
-                <option value="Lost">Lost</option>
               </select>
               <textarea
                 name="note"
